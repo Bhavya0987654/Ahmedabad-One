@@ -1,0 +1,6 @@
+{
+  "name": "Ahmedabad One",
+  "description": "Unified transit app for Ahmedabad merging Metro, BRTS, and AMTS with ticketing, smart passes, live schedules, trip planner, and digital wallet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

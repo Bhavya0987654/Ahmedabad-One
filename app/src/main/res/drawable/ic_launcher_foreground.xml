@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Orange curved motion arrow matching the brand style guide -->
+    <path
+        android:fillColor="#FC8712"
+        android:pathData="M54,26 C69.4,26 82,38.6 82,54 C82,59.2 80.6,64.1 78.1,68.2 L73.5,63.6 C75.1,60.8 76,57.5 76,54 C76,41.9 66.1,32 54,32 C45.6,32 38.3,36.7 34.6,43.5 L41,43.5 L31,53.5 L21,43.5 L28,43.5 C32.5,33.3 42.4,26 54,26 Z" />
+    <!-- White / Orange Metro Train Front -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,48 C38,43 42,40 54,40 C66,40 70,43 70,48 L70,72 C70,75 67,77 64,77 L66,80 L62,80 L60,77 L48,77 L46,80 L42,80 L44,77 C41,77 38,75 38,72 Z" />
+    <!-- Train Windshield -->
+    <path
+        android:fillColor="#002366"
+        android:pathData="M42,44 C44,43 50,42.5 54,42.5 C58,42.5 64,43 66,44 L66,56 L42,56 Z" />
+    <!-- Train Headlights -->
+    <path
+        android:fillColor="#FC8712"
+        android:pathData="M44,66 A3,3 0 1,1 44,60 A3,3 0 1,1 44,66 Z" />
+    <path
+        android:fillColor="#FC8712"
+        android:pathData="M64,66 A3,3 0 1,1 64,60 A3,3 0 1,1 64,66 Z" />
+    <!-- Center Line / Track Indicator -->
+    <path
+        android:fillColor="#002366"
+        android:pathData="M52,62 L56,62 L56,68 L52,68 Z" />
+</vector>
