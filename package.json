@@ -11,5 +11,13 @@
     "amts"
   ],
   "author": "Ahmedabad Transit",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "serve -s . -l 3000",
+    "start": "serve -s . -l 3000",
+    "build": "echo 'Static build ready'"
+  },
+  "dependencies": {
+    "serve": "^14.2.6"
+  }
 }
