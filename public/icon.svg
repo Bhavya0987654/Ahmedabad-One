@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002D62"/>
+      <stop offset="100%" stop-color="#0A192F"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FC8712"/>
+      <stop offset="100%" stop-color="#FF9E3B"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  
+  <!-- Outer subtle transit ring -->
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#FC8712" stroke-width="6" stroke-dasharray="16 12" opacity="0.3"/>
+  
+  <!-- Curved motion arrow -->
+  <path d="M256,120 C331,120 392,181 392,256 C392,281 385,305 373,325 L351,303 C358,289 363,273 363,256 C363,197 315,149 256,149 C215,149 180,172 162,205 L193,205 L144,254 L95,205 L129,205 C151,155 199,120 256,120 Z" fill="url(#accentGrad)" filter="url(#glow)"/>
+  
+  <!-- Metro Train Front Container -->
+  <g transform="translate(40, 20)">
+    <!-- Train Body -->
+    <path d="M178,220 C178,195 198,180 258,180 C318,180 338,195 338,220 L338,340 C338,355 323,365 308,365 L318,380 L298,380 L288,365 L228,365 L218,380 L198,380 L208,365 C193,365 178,355 178,340 Z" fill="#FFFFFF" filter="url(#glow)"/>
+    
+    <!-- Windshield -->
+    <path d="M198,200 C208,195 238,192 258,192 C278,192 308,195 318,200 L318,260 L198,260 Z" fill="#002D62"/>
+    
+    <!-- Headlights -->
+    <circle cx="208" cy="310" r="14" fill="#FC8712"/>
+    <circle cx="308" cy="310" r="14" fill="#FC8712"/>
+    
+    <!-- Front Grill / Track line -->
+    <rect x="248" y="290" width="20" height="30" rx="4" fill="#002D62"/>
+  </g>
+</svg>

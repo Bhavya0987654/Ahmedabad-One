@@ -1,0 +1,19 @@
+{
+  "name": "ahmedabad-one",
+  "version": "1.0.0",
+  "description": "Unified transit PWA for Ahmedabad (Metro, BRTS & AMTS)",
+  "scripts": {
+    "dev": "echo 'Running Ahmedabad One PWA'",
+    "build": "echo 'PWA static build complete'"
+  },
+  "keywords": [
+    "transit",
+    "pwa",
+    "metro",
+    "ahmedabad",
+    "brts",
+    "amts"
+  ],
+  "author": "Ahmedabad Transit",
+  "license": "MIT"
+}

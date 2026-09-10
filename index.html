@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Ahmedabad One - Metro, BRTS & AMTS</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="Unified Ahmedabad transit app for Metro, BRTS, and AMTS. Real-time schedules, ticket booking, smart card recharge, and interactive map." />
+  <meta name="theme-color" content="#002D62" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ahmedabad One" />
+  
+  <!-- Manifest & Icons -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="/public/icon.svg" />
+  <link rel="apple-touch-icon" href="/public/icon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app-container">
+    <!-- Offline Indicator -->
+    <div id="offline-banner">
+      ⚡ Offline Mode Active — Saved QR tickets & cards remain scan-ready
+    </div>
+
+    <!-- PWA Install Banner -->
+    <div id="install-prompt-banner">
+      <span>Get the Ahmedabad One App for instant offline transit</span>
+      <button id="install-pwa-btn">Install</button>
+    </div>
+
+    <!-- Top App Bar -->
+    <header class="top-bar">
+      <div class="brand-section">
+        <div class="brand-logo-wrap">
+          <img src="/public/icon.svg" alt="Ahmedabad One Logo" />
+        </div>
+        <div class="brand-text">
+          <h1>Ahmedabad One</h1>
+          <p>METRO • BRTS • AMTS</p>
+        </div>
+      </div>
+      <div class="top-bar-actions">
+        <div class="wallet-badge" id="top-wallet-btn" title="Transit Wallet">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FC8712" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          <span class="amount" id="header-wallet-balance">₹450</span>
+        </div>
+        <div class="profile-avatar-btn" id="top-profile-btn" title="My Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Screens -->
+
+    <!-- SCREEN 1: HOME -->
+    <main id="screen-home" class="screen-view active">
+      <!-- Hero Banner -->
+      <div class="hero-card">
+        <span class="hero-tag">UNIFIED SMART COMMUTE</span>
+        <h2 class="hero-title">One Ticket across Metro & Buses</h2>
+        <p class="hero-desc">Single QR code scan valid at Metro turnstiles, Janmarg BRTS automated gates, and AMTS conductors.</p>
+        <button class="hero-btn" id="hero-book-ticket-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          Book Ticket • Instant QR
+        </button>
+      </div>
+
+      <!-- Transit Network Live Status -->
+      <div class="service-pills-row">
+        <div class="service-pill">
+          <div class="status-dot"></div>
+          <div class="service-pill-info">
+            <span class="service-pill-name">Metro Lines</span>
+            <span class="service-pill-status">All Normal (5m)</span>
+          </div>
+        </div>
+        <div class="service-pill">
+          <div class="status-dot"></div>
+          <div class="service-pill-info">
+            <span class="service-pill-name">BRTS Janmarg</span>
+            <span class="service-pill-status">Corridors Clear</span>
+          </div>
+        </div>
+        <div class="service-pill">
+          <div class="status-dot"></div>
+          <div class="service-pill-info">
+            <span class="service-pill-name">AMTS Buses</span>
+            <span class="service-pill-status">98% On Time</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Grid -->
+      <div class="section-header">
+        <h3 class="section-title">Quick Transit Services</h3>
+        <span class="section-subtitle">Tap to launch</span>
+      </div>
+      <div class="actions-grid">
+        <div class="action-card" id="action-book-ticket">
+          <div class="action-icon" style="background-color: rgba(252, 135, 18, 0.15); color: #FC8712;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+          </div>
+          <span class="action-label">Book QR Ticket</span>
+        </div>
+
+        <div class="action-card" id="action-trip-planner">
+          <div class="action-icon" style="background-color: rgba(2, 132, 199, 0.15); color: #0284C7;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          </div>
+          <span class="action-label">Trip Planner</span>
+        </div>
+
+        <div class="action-card" id="action-timetable">
+          <div class="action-icon" style="background-color: rgba(16, 185, 129, 0.15); color: #10B981;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <span class="action-label">Schedules</span>
+        </div>
+
+        <div class="action-card" id="action-recharge-pass">
+          <div class="action-icon" style="background-color: rgba(168, 85, 247, 0.15); color: #A855F7;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          </div>
+          <span class="action-label">Smart Pass</span>
+        </div>
+
+        <div class="action-card" id="action-travers">
+          <div class="action-icon" style="background-color: rgba(245, 158, 11, 0.15); color: #F59E0B;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+          <span class="action-label">Daily Travers</span>
+        </div>
+
+        <div class="action-card" id="action-onebot">
+          <div class="action-icon" style="background-color: rgba(236, 72, 153, 0.15); color: #EC4899;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </div>
+          <span class="action-label">HelpBot AI</span>
+        </div>
+      </div>
+
+      <!-- Active Ticket Card Preview -->
+      <div class="section-header">
+        <h3 class="section-title">Active Journey Ticket</h3>
+        <span class="section-subtitle" id="home-ticket-expiry">Valid for 2h 45m</span>
+      </div>
+      <div class="ticket-container" id="home-active-ticket-card">
+        <div class="ticket-header-pill">
+          <div>
+            <span style="font-size: 11px; font-weight: 800; color: #FC8712; letter-spacing: 1px;">METRO EXPRESS</span>
+            <div style="font-size: 13px; font-weight: 700;" id="home-ticket-number">TKT-AHM-9842</div>
+          </div>
+          <span class="ticket-status-badge">ACTIVE</span>
+        </div>
+
+        <div class="ticket-route-box">
+          <div class="station-node">
+            <span class="label">FROM</span>
+            <span class="name" id="home-ticket-origin">THALTEJ</span>
+            <span style="font-size: 10px; color: #94A3B8;">Platform 02</span>
+          </div>
+          <div style="color: #FC8712;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </div>
+          <div class="station-node" style="text-align: right;">
+            <span class="label">TO</span>
+            <span class="name" id="home-ticket-destination">OLD HIGH COURT</span>
+            <span style="font-size: 10px; color: #94A3B8;">Interchange Station</span>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="home-view-qr-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Show Turnstile QR Code
+        </button>
+      </div>
+
+      <!-- Live Radar Section -->
+      <div class="section-header">
+        <h3 class="section-title">Live Train & Bus Radar</h3>
+        <span class="section-subtitle">Real-time GPS tracking</span>
+      </div>
+      <div id="live-vehicles-list">
+        <!-- Injected via JavaScript -->
+      </div>
+    </main>
+
+    <!-- SCREEN 2: INTERACTIVE TRANSIT MAP -->
+    <section id="screen-map" class="screen-view">
+      <div class="section-header">
+        <h2 class="section-title">Interactive Transit Network</h2>
+        <span class="section-subtitle">Metro & BRTS lines</span>
+      </div>
+
+      <div class="map-filter-row">
+        <button class="map-filter-chip active" data-filter="All">All Lines</button>
+        <button class="map-filter-chip" data-filter="East-West">Metro E-W (Blue)</button>
+        <button class="map-filter-chip" data-filter="North-South">Metro N-S (Red)</button>
+        <button class="map-filter-chip" data-filter="BRTS">BRTS Janmarg (Orange)</button>
+        <button class="map-filter-chip" data-filter="Interchange">Interchanges</button>
+      </div>
+
+      <div class="map-viewport-wrap">
+        <svg id="transit-map-svg" class="map-svg-canvas" viewBox="0 0 500 500">
+          <!-- Lines & Stations drawn by JS -->
+        </svg>
+      </div>
+
+      <div id="station-info-sheet" class="station-sheet-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <div>
+            <h4 id="sheet-station-name" style="font-size: 16px; font-weight: 800; color: #FFF;">Old High Court</h4>
+            <span id="sheet-station-line" style="font-size: 12px; color: #FC8712; font-weight: 700;">Metro Interchange (E-W & N-S)</span>
+          </div>
+          <span style="background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;">Accessible</span>
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button class="primary-btn" id="sheet-set-origin-btn" style="padding: 8px; font-size: 12px; flex: 1;">Start Here</button>
+          <button class="primary-btn" id="sheet-set-dest-btn" style="padding: 8px; font-size: 12px; flex: 1; background-color: var(--metro-ew);">Destination</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: TICKETS -->
+    <section id="screen-tickets" class="screen-view">
+      <div class="section-header">
+        <h2 class="section-title">My Journey Tickets</h2>
+        <button class="hero-btn" id="ticket-tab-book-btn" style="padding: 6px 12px; font-size: 11px;">+ New Ticket</button>
+      </div>
+
+      <div id="tickets-history-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- SCREEN 4: SMART PASSES -->
+    <section id="screen-passes" class="screen-view">
+      <div class="section-header">
+        <h2 class="section-title">Smart Transit Cards</h2>
+        <span class="section-subtitle">NFC & QR Gate Ready</span>
+      </div>
+
+      <div class="smart-card-preview" id="main-transit-card">
+        <div class="smart-card-top">
+          <div>
+            <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.5px; opacity: 0.85;">AHMEDABAD ONE CARD</span>
+            <div style="font-size: 15px; font-weight: 800;">UNIFIED 3-IN-1 PASS</div>
+          </div>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+        </div>
+
+        <div class="card-number" id="pass-card-number">AHM • 8841 • 2049 • 5519</div>
+
+        <div class="card-bottom-row">
+          <div>
+            <span style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">Card Holder</span>
+            <div style="font-size: 13px; font-weight: 700;">BHAVYA PATEL</div>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 9px; opacity: 0.7; text-transform: uppercase;">Card Balance</span>
+            <div style="font-size: 19px; font-weight: 800; color: #FFF;" id="pass-card-balance">₹450.00</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="tap-gate-btn" id="simulate-gate-tap-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        Simulate AFC Turnstile NFC / QR Tap
+      </button>
+
+      <div style="display: flex; gap: 8px; margin-top: 14px; margin-bottom: 20px;">
+        <button class="primary-btn" id="pass-recharge-modal-btn" style="flex: 1;">Recharge Card</button>
+        <button class="primary-btn" id="pass-apply-new-btn" style="flex: 1; background-color: var(--surface-card); border: 1px solid var(--border-color);">Apply New Pass</button>
+      </div>
+
+      <div class="section-header">
+        <h3 class="section-title">Transit Pass Benefits</h3>
+      </div>
+      <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+        <p>• <strong>Instant 10% Off</strong> on all Metro & BRTS journey fares.</p>
+        <p>• <strong>Zero Queues</strong> — Walk directly through smart turnstiles.</p>
+        <p>• <strong>Automatic Top-up</strong> and multi-modal transfer protection.</p>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: PROFILE & WALLET -->
+    <section id="screen-profile" class="screen-view">
+      <div class="section-header">
+        <h2 class="section-title">Commuter Account</h2>
+      </div>
+
+      <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--brand-secondary); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: #FFF;">
+          BP
+        </div>
+        <div>
+          <h3 style="font-size: 16px; font-weight: 800; color: #FFF;">Bhavya Patel</h3>
+          <p style="font-size: 12px; color: var(--text-secondary);">ptlbhavya10@gmail.com</p>
+          <span style="font-size: 10px; color: #10B981; font-weight: 700;">Verified Commuter • Smart Card Active</span>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h3 class="section-title">Transit Digital Wallet</h3>
+      </div>
+      <div style="background: linear-gradient(135deg, #152744, #0A192F); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <span style="font-size: 12px; color: var(--text-secondary);">AVAILABLE WALLET BALANCE</span>
+          <span style="font-size: 22px; font-weight: 800; color: #FC8712;" id="profile-wallet-balance">₹450.00</span>
+        </div>
+        <button class="primary-btn" id="add-wallet-funds-btn" style="padding: 10px;">+ Add Funds (UPI / Cards)</button>
+      </div>
+
+      <div class="section-header">
+        <h3 class="section-title">Recent Wallet Activity</h3>
+      </div>
+      <div id="wallet-history-list">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="section-header" style="margin-top: 20px;">
+        <h3 class="section-title">Transit Helpline & SOS</h3>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <a href="tel:18002330000" style="text-decoration: none;" class="primary-btn" style="background-color: var(--surface-card); border: 1px solid var(--border-color); font-size: 12px;">
+          📞 Gujarat Metro SOS
+        </a>
+        <a href="tel:100" style="text-decoration: none;" class="primary-btn" style="background-color: #7F1D1D; font-size: 12px;">
+          🚨 Police Helpline 100
+        </a>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-screen="screen-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-map">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+        <span>Map</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-tickets">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        <span>Tickets</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-passes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Passes</span>
+      </button>
+
+      <button class="nav-item" data-screen="screen-profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+
+    <!-- MODAL 1: BOOK TICKET DIALOG -->
+    <div class="modal-overlay" id="modal-book-ticket">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">Book Transit Ticket</h3>
+          <button class="modal-close-btn" data-close="modal-book-ticket">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Transit Network Mode</label>
+            <div class="segmented-control" id="modal-mode-selector">
+              <button class="segmented-btn active" data-mode="Metro">Metro</button>
+              <button class="segmented-btn" data-mode="BRTS">BRTS</button>
+              <button class="segmented-btn" data-mode="AMTS">AMTS</button>
+              <button class="segmented-btn" data-mode="Combo">Combo (10% Off)</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Origin Station</label>
+            <select class="form-select" id="booking-origin-select">
+              <!-- Injected by JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Destination Station</label>
+            <select class="form-select" id="booking-dest-select">
+              <!-- Injected by JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Passenger Type</label>
+            <div class="segmented-control" id="passenger-type-selector">
+              <button class="segmented-btn active" data-ptype="Single">Single Rider</button>
+              <button class="segmented-btn" data-ptype="Family">Family / Group</button>
+            </div>
+          </div>
+
+          <div class="form-group" id="group-count-group" style="display: none;">
+            <label class="form-label">Number of Passengers (1 - 6)</label>
+            <input type="number" class="form-input" id="passenger-count-input" min="1" max="6" value="2" />
+          </div>
+
+          <div class="fare-breakdown-card">
+            <div class="fare-row">
+              <span style="color: var(--text-secondary);">Distance & Travel Time</span>
+              <span id="booking-calc-dist">8.4 km • ~19 mins</span>
+            </div>
+            <div class="fare-row">
+              <span style="color: var(--text-secondary);">Base Fare</span>
+              <span id="booking-calc-base">₹20</span>
+            </div>
+            <div class="fare-row" id="combo-discount-row" style="display: none; color: #10B981;">
+              <span>Combo 3-in-1 Discount</span>
+              <span>-10%</span>
+            </div>
+            <div class="fare-total-row">
+              <span>Total Fare</span>
+              <span id="booking-calc-total">₹20</span>
+            </div>
+          </div>
+
+          <button class="primary-btn" id="confirm-booking-btn">
+            Confirm & Generate QR Code
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: ACTIVE QR CODE VIEWER -->
+    <div class="modal-overlay" id="modal-qr-view">
+      <div class="modal-container" style="text-align: center;">
+        <div class="modal-header">
+          <h3 class="modal-title">Transit Turnstile Pass</h3>
+          <button class="modal-close-btn" data-close="modal-qr-view">&times;</button>
+        </div>
+        <div class="modal-body">
+          <span style="font-size: 11px; font-weight: 800; color: #FC8712; letter-spacing: 1px;">POINT QR AT AFC SCANNER</span>
+          
+          <div class="qr-card-center">
+            <svg class="qr-code-svg" id="modal-qr-svg" viewBox="0 0 200 200">
+              <!-- Dynamically drawn QR pattern -->
+            </svg>
+            <div class="qr-caption" id="modal-qr-ticket-code">TKT-AHM-9842</div>
+            <div style="font-size: 11px; color: #64748B; margin-top: 4px;" id="modal-qr-route">THALTEJ -> OLD HIGH COURT</div>
+          </div>
+
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 10px; font-size: 12px; color: #10B981; font-weight: 600; margin-bottom: 14px;">
+            Valid across AFC automated gates & conductor POS
+          </div>
+
+          <button class="tap-gate-btn" id="test-qr-gate-btn" style="background: var(--brand-secondary); border: none;">
+            Simulate Turnstile Gate Unlock
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 3: TIMETABLE & SCHEDULES -->
+    <div class="modal-overlay" id="modal-timetable">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">Timetables & Live Alerts</h3>
+          <button class="modal-close-btn" data-close="modal-timetable">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px; padding: 12px; margin-bottom: 16px;">
+            <div style="font-size: 11px; font-weight: 800; color: #F59E0B; margin-bottom: 4px;">SERVICE ADVISORY</div>
+            <div style="font-size: 12px; color: #FFF;">Old High Court Interchange escalators fully operational. Extra trains running between Motera and APMC for evening rush hour.</div>
+          </div>
+
+          <div class="section-header">
+            <h4 class="section-title">Upcoming Train Departures</h4>
+          </div>
+          <div id="timetable-departures-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 4: TRIP PLANNER -->
+    <div class="modal-overlay" id="modal-trip-planner">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">Multi-Modal Trip Planner</h3>
+          <button class="modal-close-btn" data-close="modal-trip-planner">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">From</label>
+            <select class="form-select" id="planner-origin-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">To</label>
+            <select class="form-select" id="planner-dest-select"></select>
+          </div>
+          <button class="primary-btn" id="calc-plan-btn" style="margin-bottom: 16px;">Find Optimal Route</button>
+
+          <div id="planner-results" style="display: none;">
+            <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+              <div style="font-size: 11px; color: #FC8712; font-weight: 800;">RECOMMENDED ROUTE</div>
+              <h4 style="font-size: 15px; font-weight: 800; color: #FFF; margin: 4px 0;" id="plan-title">Metro E-W -> Transfer at Old High Court</h4>
+              <p style="font-size: 12px; color: var(--text-secondary);" id="plan-details">Total Time: ~23 mins • Fare: ₹25 • 1 Transfer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 5: DAILY TRAVERS COMMUTE ANALYTICS -->
+    <div class="modal-overlay" id="modal-travers">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">Daily Travers Commute Stats</h3>
+          <button class="modal-close-btn" data-close="modal-travers">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+              <span style="font-size: 11px; color: var(--text-secondary);">TOTAL TRIPS</span>
+              <h3 style="font-size: 24px; font-weight: 800; color: #FC8712;">28</h3>
+              <span style="font-size: 10px; color: #10B981;">This month</span>
+            </div>
+            <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+              <span style="font-size: 11px; color: var(--text-secondary);">CO₂ SAVED</span>
+              <h3 style="font-size: 24px; font-weight: 800; color: #10B981;">34.2 kg</h3>
+              <span style="font-size: 10px; color: #10B981;">vs Driving</span>
+            </div>
+          </div>
+          <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+            <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #FFF;">Top Commute Corridor</div>
+            <div style="font-size: 14px; font-weight: 800; color: #0284C7;">Thaltej Gam ⇄ Old High Court</div>
+            <p style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">64% of all commutes taken via Ahmedabad Metro Blue Line</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 6: HELPBOT / ONEBOT AI -->
+    <div class="modal-overlay" id="modal-onebot">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">OneBot Transit Assistant</h3>
+          <button class="modal-close-btn" data-close="modal-onebot">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="chat-window">
+            <div class="chat-messages" id="bot-messages-container">
+              <div class="chat-bubble bot">
+                Namaste Bhavya! I am OneBot, your Ahmedabad transit assistant. Ask me about train timings, 10% Combo discounts, interchange instructions, or transit guidelines.
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; overflow-x: auto; padding: 8px 0;">
+              <button class="map-filter-chip" style="font-size: 10px;" onclick="window.sendBotPrompt('What are Metro operational hours?')">Metro Hours?</button>
+              <button class="map-filter-chip" style="font-size: 10px;" onclick="window.sendBotPrompt('How do I transfer at Old High Court?')">Transfer Guide</button>
+              <button class="map-filter-chip" style="font-size: 10px;" onclick="window.sendBotPrompt('Tell me about the 10% Combo pass discount')">10% Discount</button>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="bot-user-input" placeholder="Type transit query..." />
+              <button class="chat-send-btn" id="bot-send-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GATE TOAST NOTIFICATION -->
+    <div class="gate-toast" id="gate-toast">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>GATE UNLOCKED — ENJOY YOUR JOURNEY!</span>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

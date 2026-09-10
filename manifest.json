@@ -1,0 +1,26 @@
+{
+  "name": "Ahmedabad One - Metro, BRTS & AMTS Transit",
+  "short_name": "Ahmedabad One",
+  "description": "Unified transit application for Ahmedabad merging Metro, BRTS, and AMTS with ticketing, smart passes, live schedules, trip planner, and digital wallet.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0A192F",
+  "theme_color": "#002D62",
+  "categories": ["travel", "navigation", "transportation"],
+  "icons": [
+    {
+      "src": "/public/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/public/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
