@@ -48,14 +48,14 @@ body {
 
 #app-container {
   width: 100%;
-  max-width: 540px;
+  max-width: 1140px;
   min-height: 100vh;
   background-color: var(--bg-color);
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-  padding-bottom: 74px; /* Space for bottom nav */
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  padding-bottom: 84px; /* Space for nav bar */
 }
 
 /* Offline Notice Banner */
@@ -94,14 +94,50 @@ body {
 /* Top App Bar */
 .top-bar {
   background-color: var(--brand-primary);
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 12px 20px;
   position: sticky;
   top: 0;
   z-index: 50;
   box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top-bar-inner {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.desktop-nav-links {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.top-nav-link {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.top-nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-nav-link.active {
+  color: #FFFFFF;
+  background-color: var(--brand-secondary);
+  box-shadow: 0 2px 10px rgba(252, 135, 18, 0.35);
 }
 
 .brand-section {
@@ -946,3 +982,192 @@ body {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & ADAPTIVE LAYOUTS
+   ========================================================================== */
+
+.responsive-two-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.col-main, .col-side {
+  width: 100%;
+}
+
+.map-responsive-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.map-main-col, .map-side-col {
+  width: 100%;
+}
+
+.map-legend-box {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 14px;
+}
+
+.legend-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.legend-bar {
+  width: 22px;
+  height: 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-bar.ew { background-color: var(--metro-ew); }
+.legend-bar.ns { background-color: var(--metro-ns); }
+.legend-bar.brts { background-color: var(--brts-orange); }
+
+.legend-dot.interchange {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #FFF;
+  border: 3px solid #FC8712;
+  flex-shrink: 0;
+}
+
+.tickets-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Tablet Layout (min-width: 640px) */
+@media (min-width: 640px) {
+  .screen-view {
+    padding: 22px;
+  }
+
+  .actions-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+
+  /* Modals as centered dialogs */
+  .modal-overlay {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .modal-container {
+    border-radius: var(--radius-lg);
+    max-width: 520px;
+    animation: modalZoomIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes modalZoomIn {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .hero-card {
+    padding: 22px;
+  }
+
+  .hero-title {
+    font-size: 20px;
+  }
+}
+
+/* Tablet & Desktop Layout (min-width: 860px) */
+@media (min-width: 860px) {
+  .desktop-nav-links {
+    display: flex;
+  }
+
+  .responsive-two-col {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .map-responsive-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .map-viewport-wrap {
+    height: 540px;
+  }
+
+  .station-sheet-card {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  /* Sleek floating dock navigation */
+  .bottom-nav {
+    max-width: 580px;
+    bottom: 20px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+    background-color: rgba(17, 34, 64, 0.96);
+    backdrop-filter: blur(20px);
+    padding: 0 20px;
+    height: 64px;
+  }
+
+  .hero-card {
+    padding: 26px;
+  }
+
+  .hero-title {
+    font-size: 23px;
+  }
+
+  .hero-desc {
+    font-size: 13.5px;
+  }
+}
+
+/* Large Screens (min-width: 1200px) */
+@media (min-width: 1200px) {
+  .screen-view {
+    padding: 28px 32px;
+  }
+
+  .map-viewport-wrap {
+    height: 580px;
+  }
+}
+

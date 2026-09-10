@@ -171,33 +171,44 @@ function renderWalletBalances() {
   if (cardBal) cardBal.textContent = `₹${appState.cardBalance.toFixed(2)}`;
 }
 
-// Navigation Tabs Switcher
-document.querySelectorAll('.nav-item').forEach((btn) => {
+// Navigation Screen Switcher (Unified for mobile bottom nav and desktop top bar)
+function switchScreen(targetScreen) {
+  document.querySelectorAll('.nav-item').forEach((b) => {
+    b.classList.toggle('active', b.getAttribute('data-screen') === targetScreen);
+  });
+  document.querySelectorAll('.top-nav-link').forEach((b) => {
+    b.classList.toggle('active', b.getAttribute('data-screen') === targetScreen);
+  });
+  document.querySelectorAll('.screen-view').forEach((s) => s.classList.remove('active'));
+
+  const screenEl = document.getElementById(targetScreen);
+  if (screenEl) {
+    screenEl.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  if (targetScreen === 'screen-map') {
+    renderTransitMap('All');
+  } else if (targetScreen === 'screen-tickets') {
+    renderTicketsHistory();
+  } else if (targetScreen === 'screen-profile') {
+    renderTransactions();
+  }
+}
+
+document.querySelectorAll('.nav-item, .top-nav-link').forEach((btn) => {
   btn.addEventListener('click', () => {
     const targetScreen = btn.getAttribute('data-screen');
-    document.querySelectorAll('.nav-item').forEach((b) => b.classList.remove('active'));
-    document.querySelectorAll('.screen-view').forEach((s) => s.classList.remove('active'));
-
-    btn.classList.add('active');
-    const screenEl = document.getElementById(targetScreen);
-    if (screenEl) screenEl.classList.add('active');
-
-    if (targetScreen === 'screen-map') {
-      renderTransitMap('All');
-    } else if (targetScreen === 'screen-tickets') {
-      renderTicketsHistory();
-    } else if (targetScreen === 'screen-profile') {
-      renderTransactions();
-    }
+    if (targetScreen) switchScreen(targetScreen);
   });
 });
 
 // Top bar shortcuts
 document.getElementById('top-wallet-btn')?.addEventListener('click', () => {
-  document.querySelector('.nav-item[data-screen="screen-profile"]')?.click();
+  switchScreen('screen-profile');
 });
 document.getElementById('top-profile-btn')?.addEventListener('click', () => {
-  document.querySelector('.nav-item[data-screen="screen-profile"]')?.click();
+  switchScreen('screen-profile');
 });
 
 // Modal open & close
