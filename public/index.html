@@ -21,23 +21,6 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <!-- Desktop Layout Switcher (Visible on desktop to toggle between 1:1 Mobile Preview & Expanded View) -->
-  <aside id="desktop-view-mode-bar" class="desktop-view-bar" aria-label="Layout Switcher">
-    <div class="view-bar-inner">
-      <span class="view-bar-title">View Mode:</span>
-      <div class="view-toggle-pill">
-        <button id="view-mode-mobile-btn" class="view-toggle-item active" title="1:1 Match with Google AI Studio Mobile Preview">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="2" width="14" height="20" rx="3"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-          📱 Mobile View (Preview)
-        </button>
-        <button id="view-mode-wide-btn" class="view-toggle-item" title="Expanded Desktop View">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-          💻 Expanded View
-        </button>
-      </div>
-    </div>
-  </aside>
-
   <div id="app-container">
     <!-- Offline Detection Banner -->
     <div id="offline-banner">⚠️ You are offline. Cached transit passes and tickets are active.</div>
@@ -421,7 +404,7 @@
         <button class="hero-btn" id="ticket-tab-book-btn" style="background-color: var(--brand-secondary); color: white; border: none; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer;">+ New Ticket</button>
       </div>
 
-      <div id="tickets-history-container" style="display: flex; flex-direction: column; gap: 14px;">
+      <div id="tickets-history-container" class="tickets-grid">
         <!-- Rendered by JS -->
       </div>
     </section>

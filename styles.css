@@ -86,103 +86,36 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Desktop Preview Mode Bar (Visible on desktop/tablets) */
-.desktop-view-bar {
-  display: none;
-  width: 100%;
-  padding: 10px 16px 0 16px;
-  justify-content: center;
-  align-items: center;
-  z-index: 90;
-}
-
-@media (min-width: 640px) {
-  .desktop-view-bar {
-    display: flex;
-  }
-}
-
-.view-bar-inner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
-  padding: 5px 14px;
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
-}
-
-.view-bar-title {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.view-toggle-pill {
-  display: flex;
-  gap: 4px;
-  background-color: var(--surface-variant);
-  padding: 3px;
-  border-radius: var(--radius-full);
-}
-
-.view-toggle-item {
-  border: none;
-  background: none;
-  padding: 5px 12px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.18s ease;
-}
-
-.view-toggle-item:hover {
-  color: var(--text-primary);
-}
-
-.view-toggle-item.active {
-  background-color: var(--brand-secondary);
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(252, 135, 18, 0.35);
-}
-
 #app-container {
   width: 100%;
-  max-width: var(--app-max-width, 440px);
+  max-width: 100%;
   min-height: 100vh;
   background-color: var(--bg-color);
   position: relative;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding-bottom: 76px; /* Room for bottom navigation bar */
-  box-shadow: 0 0 35px rgba(0, 35, 102, 0.06);
-  transition: max-width 0.22s ease, border-radius 0.22s ease;
+  padding-bottom: 76px; /* Room for bottom navigation bar on mobile/tablets */
+  box-shadow: none;
+  transition: max-width 0.22s ease, padding 0.22s ease;
 }
 
+/* Tablet & Medium Screen Adaptation (640px - 991px) */
 @media (min-width: 640px) {
-  body {
-    background-color: #E6ECF5;
-  }
-
-  [data-theme="dark"] body {
-    background-color: #070B13;
-  }
-
   #app-container {
-    margin: 12px auto 28px auto;
-    border-radius: 28px;
-    border: 1px solid rgba(0, 35, 102, 0.12);
-    box-shadow: 0 16px 45px rgba(0, 35, 102, 0.14), 0 2px 10px rgba(0, 35, 102, 0.06);
-    overflow: hidden;
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Laptop & Desktop Screen Adaptation (>= 992px) */
+@media (min-width: 992px) {
+  #app-container {
+    max-width: 1240px;
+    padding-bottom: 36px; /* Bottom navigation is hidden on desktop */
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
@@ -892,14 +825,14 @@ body {
   transition: width 0.4s ease;
 }
 
-/* Bottom Navigation Bar (Always Visible - Matching Android preview) */
+/* Bottom Navigation Bar (Mobile & Tablet) */
 .bottom-nav {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: var(--app-max-width, 440px);
+  max-width: 100%;
   height: 64px;
   background-color: var(--surface-color);
   border-top: 1px solid var(--border-color);
@@ -909,13 +842,18 @@ body {
   z-index: 60;
   box-shadow: 0 -4px 16px rgba(0, 35, 102, 0.08);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  transition: max-width 0.22s ease;
+  transition: all 0.22s ease;
 }
 
 @media (min-width: 640px) {
   .bottom-nav {
-    border-bottom-left-radius: 28px;
-    border-bottom-right-radius: 28px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    max-width: 540px;
+    border-radius: 20px 20px 0 0;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
   }
 }
 
@@ -1291,11 +1229,122 @@ body {
 }
 
 /* ==========================================================================
-   Responsive Adaptations & View Modes
-   Preserves 1:1 match with Google AI Studio Preview while supporting Desktop!
+   Automatic Responsive Layouts (Mobile, Tablet, Desktop)
+   Seamlessly adapts based on device screen size and viewport orientation
    ========================================================================== */
 
-/* Tablet & Desktop Dialogs */
+/* 1. Desktop Top Navigation - active on screens >= 768px */
+@media (min-width: 768px) {
+  .desktop-nav-links {
+    display: flex !important;
+  }
+}
+
+/* 2. Responsive Two-Column Layout (Home & Passes Screens) */
+.responsive-two-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .responsive-two-col {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1100px) {
+  .responsive-two-col {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 28px;
+  }
+}
+
+/* 3. Action Cards Grid (Trip Planner, Time Table, Help, Daily Travers) */
+.grid-actions-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+@media (min-width: 580px) {
+  .grid-actions-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+}
+
+/* 4. Interactive Transit Map Layout */
+.map-responsive-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .map-responsive-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .station-sheet-card {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1100px) {
+  .map-responsive-grid {
+    grid-template-columns: 1fr 380px;
+    gap: 28px;
+  }
+}
+
+.map-viewport-wrap {
+  height: 380px;
+}
+
+@media (min-width: 640px) {
+  .map-viewport-wrap {
+    height: 460px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .map-viewport-wrap {
+    height: 560px;
+  }
+}
+
+/* 5. Journey Tickets Responsive Grid */
+.tickets-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .tickets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tickets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* 6. Tablet & Desktop Modals (Centered Dialog with Backdrop Blur) */
 @media (min-width: 640px) {
   .modal-overlay {
     align-items: center;
@@ -1304,7 +1353,8 @@ body {
 
   .modal-container {
     border-radius: var(--radius-xl);
-    max-width: 500px;
+    max-width: 560px;
+    box-shadow: 0 24px 60px rgba(0, 23, 69, 0.35);
     animation: modalZoomIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -1314,62 +1364,11 @@ body {
   }
 }
 
-/* Expanded Desktop Mode (Triggered when user clicks "Expanded View") */
-body.view-expanded #app-container {
-  --app-max-width: 1080px;
-  max-width: 1080px;
-}
-
-body.view-expanded .desktop-nav-links {
-  display: flex;
-}
-
-body.view-expanded .responsive-two-col {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 24px;
-  align-items: start;
-}
-
-body.view-expanded .grid-actions-container {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-}
-
-body.view-expanded .map-responsive-grid {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 24px;
-  align-items: start;
-}
-
-body.view-expanded .map-viewport-wrap {
-  height: 540px;
-}
-
-body.view-expanded .station-sheet-card {
-  margin-top: 0;
-}
-
-/* Phone View (Default - 1:1 match with Google AI Studio preview) */
-body:not(.view-expanded) #app-container {
-  --app-max-width: 440px;
-  max-width: 440px;
-}
-
-body:not(.view-expanded) .responsive-two-col {
-  display: flex;
-  flex-direction: column;
-}
-
-body:not(.view-expanded) .grid-actions-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-body:not(.view-expanded) .desktop-nav-links {
-  display: none !important;
+/* 7. Bottom Navigation - Hidden on large screens where desktop top nav is prominent */
+@media (min-width: 992px) {
+  .bottom-nav {
+    display: none !important;
+  }
 }
 
 /* Live Pulse Dot & Daily Travers Styling */

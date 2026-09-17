@@ -1071,35 +1071,6 @@ if (themeToggle) {
   });
 }
 
-// Desktop View Mode Switcher (Mobile 1:1 Preview vs Expanded)
-const viewMobileBtn = document.getElementById('view-mode-mobile-btn');
-const viewWideBtn = document.getElementById('view-mode-wide-btn');
-
-function setViewMode(mode) {
-  const isExpanded = mode === 'wide';
-  document.body.classList.toggle('view-expanded', isExpanded);
-  if (viewMobileBtn) viewMobileBtn.classList.toggle('active', !isExpanded);
-  if (viewWideBtn) viewWideBtn.classList.toggle('active', isExpanded);
-  try {
-    localStorage.setItem('ahmedabad_one_view_mode', mode);
-  } catch (e) {}
-}
-
-if (viewMobileBtn) {
-  viewMobileBtn.addEventListener('click', () => setViewMode('mobile'));
-}
-if (viewWideBtn) {
-  viewWideBtn.addEventListener('click', () => setViewMode('wide'));
-}
-
-// Default to mobile view matching AI Studio preview
-try {
-  const savedViewMode = localStorage.getItem('ahmedabad_one_view_mode') || 'mobile';
-  setViewMode(savedViewMode);
-} catch (e) {
-  setViewMode('mobile');
-}
-
 // Initial Boot
 populateAllStationSelects();
 renderWalletBalances();
