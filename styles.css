@@ -1371,3 +1371,30 @@ body:not(.view-expanded) .grid-actions-container {
 body:not(.view-expanded) .desktop-nav-links {
   display: none !important;
 }
+
+/* Live Pulse Dot & Daily Travers Styling */
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10B981;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.transit-crowd-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.transit-crowd-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+

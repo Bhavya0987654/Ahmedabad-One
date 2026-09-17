@@ -84,11 +84,8 @@
             <span class="amount" id="header-wallet-balance">₹1,210</span>
           </div>
 
-          <button class="profile-avatar-btn" id="top-profile-btn" title="Commuter Account">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+          <button class="profile-avatar-btn" id="top-profile-btn" title="Commuter Account" style="font-weight: 800; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
+            <span id="top-avatar-text">BP</span>
           </button>
         </div>
       </div>
@@ -219,14 +216,19 @@
 
             <div class="grid-action-tile" id="action-travers">
               <div class="grid-tile-top">
-                <div class="grid-tile-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <div class="grid-tile-icon-box" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
                 </div>
                 <div class="grid-tile-arrow">›</div>
               </div>
               <div>
                 <div class="grid-tile-title">Daily Travers</div>
-                <div class="grid-tile-subtitle">1-DAY ALL ACCESS</div>
+                <div class="grid-tile-subtitle" id="daily-travers-tile-sub" style="color: #10B981; font-weight: 800;">842K+ ON TRANSIT</div>
               </div>
             </div>
           </div>
@@ -683,29 +685,172 @@
       </div>
     </div>
 
-    <!-- MODAL 6: DAILY TRAVERS TOURIST PASS (DailyTraversDialog.kt) -->
+    <!-- MODAL 6: DAILY TRAVERS - LIVE TRANSIT RIDERSHIP & CROWD (DailyTraversDialog.kt) -->
     <div class="modal-overlay" id="modal-travers">
-      <div class="modal-container">
+      <div class="modal-container" style="max-height: 90vh; overflow-y: auto;">
         <div class="modal-header">
-          <h3 class="modal-title">Daily Travers - Tourist Day Pass</h3>
+          <div>
+            <h3 class="modal-title">Daily Travers - Live Passenger Stats</h3>
+            <div style="font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+              <span class="live-pulse-dot"></span> Real-time network ridership & crowd telemetry
+            </div>
+          </div>
           <button class="modal-close-btn" data-close="modal-travers">&times;</button>
         </div>
         <div class="modal-body">
-          <div style="background: linear-gradient(135deg, #002366, #FC8712); color: white; padding: 20px; border-radius: 16px; margin-bottom: 16px; text-align: center;">
-            <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px;">UNLIMITED 24-HOUR TRANSIT</div>
-            <div style="font-size: 32px; font-weight: 800; margin: 8px 0;">₹100</div>
-            <p style="font-size: 12px; opacity: 0.9;">Unlimited rides across all Gujarat Metro Lines, BRTS Janmarg Corridors, and AMTS City Feeder Buses.</p>
+          <!-- Live Network Hero Banner -->
+          <div style="background: linear-gradient(135deg, #002366, #0A3C9E); color: white; padding: 18px; border-radius: 16px; margin-bottom: 16px; position: relative; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 1.2px; opacity: 0.85;">AHMEDABAD COMMUTE PULSE TODAY</div>
+                <div style="font-size: 28px; font-weight: 800; margin: 4px 0 2px 0; color: #FFFFFF;" id="live-total-riders">842,650</div>
+                <div style="font-size: 11.5px; opacity: 0.9;">Total Citizens Travelling Across Metro, BRTS & Buses</div>
+              </div>
+              <span style="background: rgba(16, 185, 129, 0.25); border: 1px solid #10B981; color: #34D399; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 999px;">
+                ● LIVE
+              </span>
+            </div>
+            <div style="margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 12px; text-align: center;">
+              <div>
+                <div style="font-size: 10px; opacity: 0.8;">Avg Wait Time</div>
+                <div style="font-size: 14px; font-weight: 800; color: #FC8712;">4.2 min</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; opacity: 0.8;">Peak Rush Hour</div>
+                <div style="font-size: 14px; font-weight: 800; color: #F59E0B;">5:30 - 8:30 PM</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; opacity: 0.8;">Capacity In Use</div>
+                <div style="font-size: 14px; font-weight: 800; color: #10B981;">76% Normal</div>
+              </div>
+            </div>
           </div>
 
-          <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 18px;">
-            <p>✓ Valid on all 32 Metro & 160+ BRTS stations.</p>
-            <p>✓ Instant NFC Turnstile & QR Gate activation.</p>
-            <p>✓ Valid until midnight from the time of booking.</p>
+          <!-- Section: Breakdown by Transit System -->
+          <div class="section-header" style="margin-bottom: 10px;">
+            <h4 class="section-title">Passenger Volume by Network</h4>
           </div>
 
-          <button class="primary-btn" id="confirm-buy-travers-btn">
-            Buy 1-Day Pass (₹100)
-          </button>
+          <!-- Metro Rail Card -->
+          <div class="transit-crowd-card" style="background: var(--surface-variant); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">🚇</span>
+                <div>
+                  <div style="font-weight: 800; font-size: 14px; color: var(--text-primary);">Ahmedabad Metro (GMRC)</div>
+                  <div style="font-size: 11px; color: var(--text-secondary);">32 Stations • 2 Main Corridors</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 800; font-size: 16px; color: var(--brand-secondary);" id="travers-metro-count">148,420</div>
+                <div style="font-size: 10px; color: var(--text-secondary);">travelling today</div>
+              </div>
+            </div>
+            <!-- Occupancy bar -->
+            <div style="margin: 8px 0 6px 0;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 3px;">
+                <span style="color: var(--text-secondary);">Current Rush Level:</span>
+                <span style="color: #F59E0B;">Moderate (72% Train Occupancy)</span>
+              </div>
+              <div style="height: 6px; background: rgba(0,0,0,0.1); border-radius: 999px; overflow: hidden;">
+                <div style="width: 72%; height: 100%; background: linear-gradient(90deg, #10B981, #F59E0B); border-radius: 999px;"></div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); background: rgba(0, 35, 102, 0.05); padding: 8px 10px; border-radius: 8px; margin-top: 6px;">
+              ⚡ <b>Busiest Corridors:</b> Thaltej ↔ Vastral Gam (86,500 riders) • APMC ↔ Motera (61,920 riders)
+            </div>
+          </div>
+
+          <!-- BRTS Janmarg Card -->
+          <div class="transit-crowd-card" style="background: var(--surface-variant); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">🚌</span>
+                <div>
+                  <div style="font-weight: 800; font-size: 14px; color: var(--text-primary);">BRTS Janmarg Rapid Buses</div>
+                  <div style="font-size: 11px; color: var(--text-secondary);">Dedicated Corridors • 160+ Stops</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 800; font-size: 16px; color: #FC8712;" id="travers-brts-count">214,830</div>
+                <div style="font-size: 10px; color: var(--text-secondary);">travelling today</div>
+              </div>
+            </div>
+            <!-- Occupancy bar -->
+            <div style="margin: 8px 0 6px 0;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 3px;">
+                <span style="color: var(--text-secondary);">Current Rush Level:</span>
+                <span style="color: #EF4444;">High Rush (84% Fleet Load)</span>
+              </div>
+              <div style="height: 6px; background: rgba(0,0,0,0.1); border-radius: 999px; overflow: hidden;">
+                <div style="width: 84%; height: 100%; background: linear-gradient(90deg, #F59E0B, #EF4444); border-radius: 999px;"></div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); background: rgba(252, 135, 18, 0.08); padding: 8px 10px; border-radius: 8px; margin-top: 6px;">
+              ⚡ <b>Busiest Corridors:</b> RTO ↔ Maninagar (48,200 riders) • Iscon ↔ Bopal (41,500 riders)
+            </div>
+          </div>
+
+          <!-- AMTS Bus Card -->
+          <div class="transit-crowd-card" style="background: var(--surface-variant); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">🚏</span>
+                <div>
+                  <div style="font-weight: 800; font-size: 14px; color: var(--text-primary);">AMTS City Feeder Buses</div>
+                  <div style="font-size: 11px; color: var(--text-secondary);">City-wide routes • 700+ Buses</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-weight: 800; font-size: 16px; color: #10B981;" id="travers-amts-count">479,400</div>
+                <div style="font-size: 10px; color: var(--text-secondary);">travelling today</div>
+              </div>
+            </div>
+            <!-- Occupancy bar -->
+            <div style="margin: 8px 0 6px 0;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 3px;">
+                <span style="color: var(--text-secondary);">Current Rush Level:</span>
+                <span style="color: #F59E0B;">Busy (78% Occupancy)</span>
+              </div>
+              <div style="height: 6px; background: rgba(0,0,0,0.1); border-radius: 999px; overflow: hidden;">
+                <div style="width: 78%; height: 100%; background: linear-gradient(90deg, #10B981, #F59E0B); border-radius: 999px;"></div>
+              </div>
+            </div>
+            <div style="font-size: 11px; color: var(--text-secondary); background: rgba(16, 185, 129, 0.08); padding: 8px 10px; border-radius: 8px; margin-top: 6px;">
+              ⚡ <b>Busiest Corridors:</b> Lal Darwaja ↔ SG Highway (54,200 riders) • Kalupur ↔ Chandkheda
+            </div>
+          </div>
+
+          <!-- Live Route Crowding Inspector -->
+          <div style="background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 8px;">
+            <div style="font-weight: 800; font-size: 13px; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+              <span>🔍 Check Specific Route Passenger Load</span>
+            </div>
+            <label class="form-label" style="font-size: 11px;">Select Metro, BRTS, or Bus Route:</label>
+            <select id="route-crowd-inspector-select" class="form-select" style="margin-bottom: 10px; font-size: 12.5px;">
+              <option value="metro-ew">🚇 [Metro] East-West Line (Thaltej - Vastral Gam)</option>
+              <option value="metro-ns">🚇 [Metro] North-South Line (APMC - Motera Stadium)</option>
+              <option value="brts-c1">🚌 [BRTS] Corridor 1 (RTO Circle - Maninagar)</option>
+              <option value="brts-c2">🚌 [BRTS] Corridor 2 (Iscon Cross Roads - Bopal)</option>
+              <option value="brts-c3">🚌 [BRTS] Corridor 3 (LD Engineering - Naroda Patiya)</option>
+              <option value="amts-151">🚏 [AMTS] Route 151 (Lal Darwaja - SG Highway)</option>
+              <option value="amts-88">🚏 [AMTS] Route 88 (Kalupur Rly Station - Chandkheda)</option>
+              <option value="amts-43">🚏 [AMTS] Route 43 (Sarangpur - Sarkhej Roza)</option>
+            </select>
+
+            <div id="route-crowd-result-box" style="background: var(--surface-variant); border-radius: 10px; padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 12px; font-weight: 800; color: var(--text-primary);" id="inspector-route-name">East-West Metro Line (Thaltej - Vastral Gam)</span>
+                <span id="inspector-crowd-badge" style="font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #D97706;">Moderate Rush</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11.5px; margin-top: 6px;">
+                <div>👥 <b>Riders Today:</b> <span id="inspector-riders-count">86,500</span></div>
+                <div>⏱️ <b>Avg Headway:</b> <span id="inspector-frequency">Every 4-5 min</span></div>
+                <div>📍 <b>Peak Station:</b> <span id="inspector-peak-station">Old High Court</span></div>
+                <div>🟢 <b>Seat Availability:</b> <span id="inspector-seat-avail">Moderate (76%)</span></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -775,15 +920,72 @@
           <button class="modal-close-btn" data-close="modal-profile-wallet">&times;</button>
         </div>
         <div class="modal-body">
-          <!-- User Profile -->
-          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px; padding: 14px; background: var(--surface-variant); border-radius: 14px;">
-            <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--brand-secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px;">
-              BP
+          <!-- User Profile Card -->
+          <div id="profile-display-card" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 14px; background: var(--surface-variant); border-radius: 14px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div id="profile-avatar-initials" style="width: 48px; height: 48px; border-radius: 50%; background: var(--brand-secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px;">
+                BP
+              </div>
+              <div>
+                <div id="profile-display-name" style="font-weight: 800; font-size: 16px; color: var(--text-primary);">Bhavya Patel</div>
+                <div id="profile-display-email" style="font-size: 12px; color: var(--text-secondary);">ptlbhavya10@gmail.com</div>
+                <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+                  <span id="profile-display-mode" style="font-size: 10px; color: #10B981; font-weight: 700; background: rgba(16, 185, 129, 0.12); padding: 2px 6px; border-radius: 4px;">Metro Commuter</span>
+                  <span id="profile-display-phone" style="font-size: 10px; color: var(--text-secondary);">+91 98765 43210</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <div style="font-weight: 800; font-size: 16px; color: var(--text-primary);">Bhavya Patel</div>
-              <div style="font-size: 12px; color: var(--text-secondary);">ptlbhavya10@gmail.com</div>
-              <span style="font-size: 10px; color: #10B981; font-weight: 700;">Verified Commuter • Active Card</span>
+            <button id="toggle-edit-profile-btn" class="view-toggle-item active" style="font-size: 11px; padding: 6px 12px; gap: 4px;" title="Edit Profile">
+              ✏️ Edit
+            </button>
+          </div>
+
+          <!-- Edit Profile Section (Collapsible Form) -->
+          <div id="edit-profile-section" style="display: none; background: var(--surface-card); border: 1.5px solid var(--brand-secondary); border-radius: 14px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-weight: 800; font-size: 14px; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+              <span>✏️ Edit Commuter Profile</span>
+              <span style="font-size: 11px; color: var(--brand-secondary); font-weight: 700;">Profile Settings</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label class="form-label" style="font-size: 11px;">Full Name</label>
+              <input type="text" id="edit-name-input" class="form-input" placeholder="Your Full Name" value="Bhavya Patel" style="padding: 9px 12px; font-size: 13px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label class="form-label" style="font-size: 11px;">Email Address</label>
+              <input type="email" id="edit-email-input" class="form-input" placeholder="name@domain.com" value="ptlbhavya10@gmail.com" style="padding: 9px 12px; font-size: 13px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label class="form-label" style="font-size: 11px;">Mobile Number</label>
+              <input type="tel" id="edit-phone-input" class="form-input" placeholder="+91 XXXXX XXXXX" value="+91 98765 43210" style="padding: 9px 12px; font-size: 13px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label class="form-label" style="font-size: 11px;">Preferred Transit Mode</label>
+              <select id="edit-mode-select" class="form-select" style="padding: 9px 12px; font-size: 13px;">
+                <option value="Metro Rail">🚇 Ahmedabad Metro Rail</option>
+                <option value="BRTS Janmarg">🚌 BRTS Janmarg Rapid Bus</option>
+                <option value="AMTS City Bus">🚏 AMTS City Bus Feeder</option>
+                <option value="Multimodal">🌐 Multimodal / All Networks</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label" style="font-size: 11px;">Home / Primary Station</label>
+              <select id="edit-home-station-select" class="form-select" style="padding: 9px 12px; font-size: 13px;">
+                <!-- Populated dynamically via JS -->
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button id="save-profile-btn" class="primary-btn" style="flex: 1; height: 38px; font-size: 13px;">
+                Save Changes
+              </button>
+              <button id="cancel-edit-profile-btn" class="primary-btn" style="width: auto; height: 38px; font-size: 13px; background: var(--surface-variant); color: var(--text-primary); border: 1px solid var(--border-color);">
+                Cancel
+              </button>
             </div>
           </div>
 
@@ -795,22 +997,12 @@
           </div>
 
           <!-- Appearance / Theme Toggle -->
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--surface-variant); border-radius: 12px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--surface-variant); border-radius: 12px; margin-bottom: 18px;">
             <div>
               <div style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">Dark Theme Mode</div>
               <div style="font-size: 11px; color: var(--text-secondary);">Toggle light / dark appearance</div>
             </div>
             <input type="checkbox" id="theme-mode-toggle" style="transform: scale(1.3); cursor: pointer;" />
-          </div>
-
-          <!-- Language Selector -->
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--surface-variant); border-radius: 12px; margin-bottom: 18px;">
-            <span style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">Language</span>
-            <select id="language-select" class="form-select" style="width: auto; padding: 6px 12px; font-size: 12px;">
-              <option value="en">English</option>
-              <option value="gu">ગુજરાતી</option>
-              <option value="hi">हिन्दी</option>
-            </select>
           </div>
 
           <div class="section-header">

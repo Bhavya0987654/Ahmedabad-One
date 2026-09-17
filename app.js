@@ -335,7 +335,8 @@ function populateAllStationSelects() {
   const selects = [
     'fare-origin-select', 'fare-dest-select',
     'booking-origin-select', 'booking-dest-select',
-    'planner-origin-select', 'planner-dest-select'
+    'planner-origin-select', 'planner-dest-select',
+    'edit-home-station-select'
   ];
 
   selects.forEach((selId) => {
@@ -569,24 +570,236 @@ document.querySelectorAll('.help-prompt-chip').forEach((chip) => {
   });
 });
 
-// Daily Travers Tourist Pass Purchase
-document.getElementById('confirm-buy-travers-btn')?.addEventListener('click', () => {
-  if (appState.walletBalance < 100) {
-    alert('Insufficient wallet funds. Please add balance.');
-    openModal('modal-profile-wallet');
-    return;
+// Daily Travers - Live Passenger & Transit Volume Telemetry
+const ROUTE_CROWD_DATA = {
+  'metro-ew': {
+    name: 'East-West Metro Line (Thaltej - Vastral Gam)',
+    riders: 86500,
+    frequency: 'Every 4-5 min',
+    peakStation: 'Old High Court',
+    seatAvail: 'Moderate (76%)',
+    crowdLevel: 'Moderate Rush',
+    badgeColor: '#D97706',
+    badgeBg: 'rgba(245, 158, 11, 0.15)'
+  },
+  'metro-ns': {
+    name: 'North-South Metro Line (APMC - Motera Stadium)',
+    riders: 61920,
+    frequency: 'Every 5-6 min',
+    peakStation: 'Kalupur Rly Station',
+    seatAvail: 'Good (64%)',
+    crowdLevel: 'Normal Flow',
+    badgeColor: '#10B981',
+    badgeBg: 'rgba(16, 185, 129, 0.15)'
+  },
+  'brts-c1': {
+    name: 'BRTS Corridor 1 (RTO Circle - Maninagar)',
+    riders: 48200,
+    frequency: 'Every 3-4 min',
+    peakStation: 'Danilimda Cross Roads',
+    seatAvail: 'Standing Only (88%)',
+    crowdLevel: 'High Peak Rush',
+    badgeColor: '#EF4444',
+    badgeBg: 'rgba(239, 68, 68, 0.15)'
+  },
+  'brts-c2': {
+    name: 'BRTS Corridor 2 (Iscon Cross Roads - Bopal)',
+    riders: 41500,
+    frequency: 'Every 4 min',
+    peakStation: 'Shivranjani Junction',
+    seatAvail: 'Busy (82%)',
+    crowdLevel: 'High Rush',
+    badgeColor: '#EF4444',
+    badgeBg: 'rgba(239, 68, 68, 0.15)'
+  },
+  'brts-c3': {
+    name: 'BRTS Corridor 3 (LD Engineering - Naroda Patiya)',
+    riders: 36100,
+    frequency: 'Every 5 min',
+    peakStation: 'Memnagar',
+    seatAvail: 'Moderate (75%)',
+    crowdLevel: 'Moderate Rush',
+    badgeColor: '#D97706',
+    badgeBg: 'rgba(245, 158, 11, 0.15)'
+  },
+  'amts-151': {
+    name: 'AMTS Route 151 (Lal Darwaja - SG Highway)',
+    riders: 54200,
+    frequency: 'Every 6-8 min',
+    peakStation: 'Iskcon Temple Stop',
+    seatAvail: 'Crowded (85%)',
+    crowdLevel: 'Peak Rush',
+    badgeColor: '#EF4444',
+    badgeBg: 'rgba(239, 68, 68, 0.15)'
+  },
+  'amts-88': {
+    name: 'AMTS Route 88 (Kalupur Rly Station - Chandkheda)',
+    riders: 42600,
+    frequency: 'Every 7-9 min',
+    peakStation: 'RTO Circle',
+    seatAvail: 'Busy (79%)',
+    crowdLevel: 'Busy',
+    badgeColor: '#D97706',
+    badgeBg: 'rgba(245, 158, 11, 0.15)'
+  },
+  'amts-43': {
+    name: 'AMTS Route 43 (Sarangpur - Sarkhej Roza)',
+    riders: 35900,
+    frequency: 'Every 8-10 min',
+    peakStation: 'Geeta Mandir Bus Port',
+    seatAvail: 'Good (71%)',
+    crowdLevel: 'Normal Flow',
+    badgeColor: '#10B981',
+    badgeBg: 'rgba(16, 185, 129, 0.15)'
   }
-  appState.walletBalance -= 100;
-  appState.transactions.unshift({
-    title: 'Daily Travers 1-Day Tourist Pass',
-    subtitle: 'Unlimited 24h Transit',
-    amount: -100,
-    date: 'Just Now'
-  });
-  saveState();
-  closeModal('modal-travers');
-  alert('Daily Travers Pass Activated! Tap your card or QR at any AFC turnstile today.');
+};
+
+let livePassengerStats = {
+  total: 842650,
+  metro: 148420,
+  brts: 214830,
+  amts: 479400
+};
+
+function updateDailyTraversStatsUI() {
+  const totalEl = document.getElementById('live-total-riders');
+  const metroEl = document.getElementById('travers-metro-count');
+  const brtsEl = document.getElementById('travers-brts-count');
+  const amtsEl = document.getElementById('amts-live-riders') || document.getElementById('travers-amts-count');
+  const tileSubEl = document.getElementById('daily-travers-tile-sub');
+
+  if (totalEl) totalEl.textContent = livePassengerStats.total.toLocaleString('en-IN');
+  if (metroEl) metroEl.textContent = livePassengerStats.metro.toLocaleString('en-IN');
+  if (brtsEl) brtsEl.textContent = livePassengerStats.brts.toLocaleString('en-IN');
+  if (amtsEl) amtsEl.textContent = livePassengerStats.amts.toLocaleString('en-IN');
+  if (tileSubEl) tileSubEl.textContent = `${Math.round(livePassengerStats.total / 1000)}K+ ON TRANSIT`;
+}
+
+function updateRouteCrowdInspector(routeKey) {
+  const data = ROUTE_CROWD_DATA[routeKey] || ROUTE_CROWD_DATA['metro-ew'];
+  const nameEl = document.getElementById('inspector-route-name');
+  const badgeEl = document.getElementById('inspector-crowd-badge');
+  const ridersEl = document.getElementById('inspector-riders-count');
+  const freqEl = document.getElementById('inspector-frequency');
+  const peakEl = document.getElementById('inspector-peak-station');
+  const seatEl = document.getElementById('inspector-seat-avail');
+
+  if (nameEl) nameEl.textContent = data.name;
+  if (badgeEl) {
+    badgeEl.textContent = data.crowdLevel;
+    badgeEl.style.color = data.badgeColor;
+    badgeEl.style.backgroundColor = data.badgeBg;
+  }
+  if (ridersEl) ridersEl.textContent = data.riders.toLocaleString('en-IN');
+  if (freqEl) freqEl.textContent = data.frequency;
+  if (peakEl) peakEl.textContent = data.peakStation;
+  if (seatEl) seatEl.textContent = data.seatAvail;
+}
+
+document.getElementById('route-crowd-inspector-select')?.addEventListener('change', (e) => {
+  updateRouteCrowdInspector(e.target.value);
 });
+
+// Periodic live ridership telemetry simulation (every 4 seconds)
+setInterval(() => {
+  const delta = Math.floor(Math.random() * 7) + 1;
+  const isMetro = Math.random() > 0.5;
+  if (isMetro) {
+    livePassengerStats.metro += delta;
+  } else {
+    livePassengerStats.brts += delta;
+  }
+  livePassengerStats.total = livePassengerStats.metro + livePassengerStats.brts + livePassengerStats.amts;
+  updateDailyTraversStatsUI();
+}, 4000);
+
+// Commuter Profile Management
+const DEFAULT_USER_PROFILE = {
+  name: 'Bhavya Patel',
+  email: 'ptlbhavya10@gmail.com',
+  phone: '+91 98765 43210',
+  preferredMode: 'Metro Rail',
+  homeStation: 'Thaltej'
+};
+
+function getSavedProfile() {
+  try {
+    const raw = localStorage.getItem('ahmedabad_one_user_profile');
+    if (raw) {
+      return { ...DEFAULT_USER_PROFILE, ...JSON.parse(raw) };
+    }
+  } catch (e) {}
+  return DEFAULT_USER_PROFILE;
+}
+
+function renderUserProfile() {
+  const profile = getSavedProfile();
+  const nameParts = profile.name.trim().split(/\s+/).filter(Boolean);
+  const initials = nameParts.length > 1 
+    ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase() 
+    : (nameParts[0] ? nameParts[0].slice(0, 2).toUpperCase() : 'BP');
+
+  const avatarInitialsEl = document.getElementById('profile-avatar-initials');
+  const topAvatarTextEl = document.getElementById('top-avatar-text');
+  const nameEl = document.getElementById('profile-display-name');
+  const emailEl = document.getElementById('profile-display-email');
+  const phoneEl = document.getElementById('profile-display-phone');
+  const modeEl = document.getElementById('profile-display-mode');
+
+  if (avatarInitialsEl) avatarInitialsEl.textContent = initials;
+  if (topAvatarTextEl) topAvatarTextEl.textContent = initials;
+  if (nameEl) nameEl.textContent = profile.name;
+  if (emailEl) emailEl.textContent = profile.email;
+  if (phoneEl) phoneEl.textContent = profile.phone;
+  if (modeEl) modeEl.textContent = `${profile.preferredMode} Commuter`;
+
+  const editName = document.getElementById('edit-name-input');
+  const editEmail = document.getElementById('edit-email-input');
+  const editPhone = document.getElementById('edit-phone-input');
+  const editMode = document.getElementById('edit-mode-select');
+  const editStation = document.getElementById('edit-home-station-select');
+
+  if (editName) editName.value = profile.name;
+  if (editEmail) editEmail.value = profile.email;
+  if (editPhone) editPhone.value = profile.phone;
+  if (editMode) editMode.value = profile.preferredMode;
+  if (editStation && profile.homeStation) editStation.value = profile.homeStation;
+}
+
+const toggleEditBtn = document.getElementById('toggle-edit-profile-btn');
+const cancelEditBtn = document.getElementById('cancel-edit-profile-btn');
+const editSection = document.getElementById('edit-profile-section');
+const saveProfileBtn = document.getElementById('save-profile-btn');
+
+function toggleProfileEditMode(show) {
+  if (!editSection) return;
+  const isVisible = show !== undefined ? show : editSection.style.display === 'none';
+  editSection.style.display = isVisible ? 'block' : 'none';
+  if (toggleEditBtn) {
+    toggleEditBtn.textContent = isVisible ? '✕ Close' : '✏️ Edit';
+  }
+}
+
+toggleEditBtn?.addEventListener('click', () => toggleProfileEditMode());
+cancelEditBtn?.addEventListener('click', () => toggleProfileEditMode(false));
+
+saveProfileBtn?.addEventListener('click', () => {
+  const name = document.getElementById('edit-name-input')?.value.trim() || 'Bhavya Patel';
+  const email = document.getElementById('edit-email-input')?.value.trim() || 'ptlbhavya10@gmail.com';
+  const phone = document.getElementById('edit-phone-input')?.value.trim() || '+91 98765 43210';
+  const preferredMode = document.getElementById('edit-mode-select')?.value || 'Metro Rail';
+  const homeStation = document.getElementById('edit-home-station-select')?.value || 'Thaltej';
+
+  const updatedProfile = { name, email, phone, preferredMode, homeStation };
+  try {
+    localStorage.setItem('ahmedabad_one_user_profile', JSON.stringify(updatedProfile));
+  } catch (e) {}
+
+  renderUserProfile();
+  toggleProfileEditMode(false);
+  alert('✓ Profile updated successfully!');
+});
+
 
 // QR Code SVG Generator
 function renderActiveQrCode() {
@@ -892,3 +1105,7 @@ populateAllStationSelects();
 renderWalletBalances();
 renderRadarVehicles();
 renderTransitMap('All');
+renderUserProfile();
+updateDailyTraversStatsUI();
+updateRouteCrowdInspector('metro-ew');
+
