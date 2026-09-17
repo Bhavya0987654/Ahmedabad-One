@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "serve -s . -l 3000",
     "start": "serve -s . -l 3000",
-    "build": "echo 'Static build ready'"
+    "build": "node build.js"
   },
   "dependencies": {
     "serve": "^14.2.6"
