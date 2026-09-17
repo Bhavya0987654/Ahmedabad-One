@@ -4,7 +4,7 @@
 // PWA Service Worker Registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
       .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
   });
@@ -856,6 +856,35 @@ if (themeToggle) {
     document.documentElement.setAttribute('data-theme', appState.darkTheme ? 'dark' : 'light');
     saveState();
   });
+}
+
+// Desktop View Mode Switcher (Mobile 1:1 Preview vs Expanded)
+const viewMobileBtn = document.getElementById('view-mode-mobile-btn');
+const viewWideBtn = document.getElementById('view-mode-wide-btn');
+
+function setViewMode(mode) {
+  const isExpanded = mode === 'wide';
+  document.body.classList.toggle('view-expanded', isExpanded);
+  if (viewMobileBtn) viewMobileBtn.classList.toggle('active', !isExpanded);
+  if (viewWideBtn) viewWideBtn.classList.toggle('active', isExpanded);
+  try {
+    localStorage.setItem('ahmedabad_one_view_mode', mode);
+  } catch (e) {}
+}
+
+if (viewMobileBtn) {
+  viewMobileBtn.addEventListener('click', () => setViewMode('mobile'));
+}
+if (viewWideBtn) {
+  viewWideBtn.addEventListener('click', () => setViewMode('wide'));
+}
+
+// Default to mobile view matching AI Studio preview
+try {
+  const savedViewMode = localStorage.getItem('ahmedabad_one_view_mode') || 'mobile';
+  setViewMode(savedViewMode);
+} catch (e) {
+  setViewMode('mobile');
 }
 
 // Initial Boot
